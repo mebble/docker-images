@@ -1,3 +1,5 @@
+const os = require('os');
+
 const express = require('express');
 
 const app = express();
@@ -10,7 +12,12 @@ app.get('/', (req, res) => {
 app.get('/pingpong/:ping', (req, res) => {
     res.send({
         message: 'pong!',
-        body: req.params.ping
+        body: {
+            ping: req.params.ping,
+            platform: os.type(),
+            release: os.release(),
+            hostName: os.hostname()
+        }
     });
 });
 
