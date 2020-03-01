@@ -31,7 +31,14 @@ app.get('/*', async (req, res) => {
         if (!result.ok) {
             throw new Error('Non-success response code from target');
         }
-        const resultBody = await result.text();
+
+        let resultBody;
+        const isJSON = result.headers.get('content-type').includes('application/json');
+        if (isJSON) {
+            resultBody = await result.json();
+        } else {
+            resultBody = await result.text();
+        }
         res.send(resultBody);
     } catch (err) {
         console.log(err);
